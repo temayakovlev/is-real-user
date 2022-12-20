@@ -39,7 +39,7 @@
             let rM = navigator.requestMediaKeySystemAccess(i, r).then(keySystem => {
                 return (keySystem ? true : false);
             }).catch(e => {
-                    return false;
+                return false;
             });
             return rM.then(function (s) {
                 return (s ? s : false);
@@ -48,11 +48,63 @@
             return false;
         };
     };
+    const wdr = () => {
+        let documentDetectionKeys = [
+            "__webdriver_evaluate",
+            "__selenium_evaluate",
+            "__webdriver_script_function",
+            "__webdriver_script_func",
+            "__webdriver_script_fn",
+            "__fxdriver_evaluate",
+            "__driver_unwrapped",
+            "__webdriver_unwrapped",
+            "__driver_evaluate",
+            "__selenium_unwrapped",
+            "__fxdriver_unwrapped",
+        ];
+
+        let windowDetectionKeys = [
+            "_phantom",
+            "__nightmare",
+            "_selenium",
+            "callPhantom",
+            "callSelenium",
+            "_Selenium_IDE_Recorder",
+        ];
+
+        for (const windowDetectionKey in windowDetectionKeys) {
+            const windowDetectionKeyValue = windowDetectionKeys[windowDetectionKey];
+            if (window[windowDetectionKeyValue]) {
+                return true;
+            };
+        };
+        for (const documentDetectionKey in documentDetectionKeys) {
+            const documentDetectionKeyValue = documentDetectionKeys[documentDetectionKey];
+            if (window['document'][documentDetectionKeyValue]) {
+                return true;
+            };
+        };
+
+        for (const documentKey in window['document']) {
+            if (documentKey.match(/\$[a-z]dc_/) && window['document'][documentKey]['cache_']) {
+                return true;
+            };
+        }
+
+        if (window['external'] && window['external'].toString() && (window['external'].toString()['indexOf']('Sequentum') != -1)) return true;
+
+        if (window['document']['documentElement']['getAttribute']('selenium')) return true;
+        if (window['document']['documentElement']['getAttribute']('webdriver')) return true;
+        if (window['document']['documentElement']['getAttribute']('driver')) return true;
+        if (navigator.webdriver !== false) return true;
+
+        return false;
+    };
     const sn = () => {
         try {
             return (screen.width > screen.availWidth || screen.height > screen.availHeight);
         } catch (err) {
-            return err;
+            return false;
         };
     };
 
@@ -63,11 +115,12 @@
     const lang = l();
     const scrn = sn();
     const webgl = wgl();
+    const webdrivr = wdr();
     const drmSystem = await drm(ua);
-    
+
     html('#ua', ua);
     html('#lang', (lang ? lang : 'невозможно определить'));
     html('#webgl-vendor', (webgl['vendor'] ? webgl['vendor'] : 'невозможно определить'));
     html('#webgl-renderer', (webgl['renderer'] ? webgl['renderer'] : 'невозможно определить'));
-    html('#result', (!(lang) || !(webgl) || !(scrn) || !(drmSystem) ? 'использует' : 'не использует'));
+    html('#result', (!(lang) || !(scrn) || !(webgl) || webdrivr || !(drmSystem) ? 'использует' : 'не использует'));
 })();
