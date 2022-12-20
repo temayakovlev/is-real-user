@@ -3,4 +3,4 @@
  - Puppeteer, Selenium
  - BrowserAutomationStudio, ZennoPoster
 
- Проверить свой браузер - temayakovlev.github.io/isrealuser/
+ Проверить свой браузер - https://temayakovlev.github.io/isrealuser/
