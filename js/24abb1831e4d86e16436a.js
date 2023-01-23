@@ -122,5 +122,5 @@
     html('#lang', (lang ? lang : 'невозможно определить'));
     html('#webgl-vendor', (webgl['vendor'] ? webgl['vendor'] : 'невозможно определить'));
     html('#webgl-renderer', (webgl['renderer'] ? webgl['renderer'] : 'невозможно определить'));
-    html('#result', (!(lang) || scrn || !(webgl) || webdrivr || !(drmSystem) ? 'использует' : 'не использует'));
+    html('#result', 'Ваш браузер ' + (!(lang) || scrn || !(webgl) || webdrivr || !(drmSystem) ? 'использует' : 'не использует') + ' средства автоматизации');
 })();

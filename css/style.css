@@ -487,6 +487,10 @@ button:not(:disabled),
 
 /* rtl:end:remove */
 
+.text-center {
+  text-align: center !important;
+}
+
 .text-muted {
   --bs-text-opacity: 1;
   color: #9c9fa6 !important;
