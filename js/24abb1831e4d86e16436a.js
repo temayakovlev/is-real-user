@@ -102,7 +102,7 @@
     };
     const sn = () => {
         try {
-            return (screen.width > screen.availWidth || screen.height > screen.availHeight);
+            return (screen.width < screen.availWidth || screen.height < screen.availHeight);
         } catch (err) {
             return false;
         };
